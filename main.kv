@@ -1,0 +1,799 @@
+ScreenManager:
+    FrontPage:
+    LoginScreen:
+    SignupScreen:
+    OTPScreen:
+    HomeScreen:
+    UploadScreen:
+    ProfileScreen:
+    StatusScreen:
+    StatusDetailScreen:
+    CameraScreen:
+    
+
+<HomeScreen>:
+    name: "home"  
+
+<UploadScreen>:
+    name: "upload"
+
+    canvas.before:
+        Color:
+            rgba: 0.85, 0.93, 1, 1   # Soft Aqua Background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+
+        # ---------------- BACK BAR ----------------
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+
+            Button:
+                text: "⟵"
+                size_hint: None, None
+                size: dp(42), dp(42)
+                background_normal: ""
+                background_color: 0.20, 0.40, 0.60, 1
+                color: 0, 0, 0, 1
+                on_release: root.go_back()
+
+            Label:
+                text: "Upload Sample"
+                font_size: "26sp"
+                bold: True
+                color: 0.10, 0.25, 0.40, 1
+                valign: "middle"
+
+        # ---------------- IMAGE PREVIEW ----------------
+        Image:
+            id: preview
+            source: "default_preview.png"
+            size_hint_y: 0.45
+            allow_stretch: True
+            keep_ratio: True
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [15]
+
+        # ---------------- DESCRIPTION INPUT ----------------
+        TextInput:
+            id: desc
+            hint_text: "Enter description..."
+            hint_text_color: 0.5, 0.5, 0.5, 1
+            font_size: "18sp"
+            padding: dp(10)
+            background_normal: ""
+            background_color: 1,1,1,1
+            foreground_color: 0,0,0,1
+            size_hint_y: None
+            height: dp(120)
+            multiline: True
+
+        Label:
+            id: success_msg
+            text: ""
+            color: 0, 0.6, 0.2, 1
+            font_size: "16sp"
+            bold: True
+            size_hint_y: None
+            height: dp(20)
+
+        # ---------------- BUTTONS ----------------
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(15)
+
+            Button:
+                text: "Select Image"
+                font_size: "18sp"
+                background_normal: ""
+                background_color: 0.30, 0.55, 0.95, 1
+                color: 0, 0, 0, 1
+                on_release: root.select_image()
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [12]
+
+            Button:
+                text: "Submit"
+                font_size: "18sp"
+                background_normal: ""
+                background_color: 0.10, 0.70, 0.40, 1
+                color: 1,1,1,1
+                on_release: root.submit_data()
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [12]
+            Button:
+                text: "Camera"
+                size_hint: (0.6, None)
+                height: "60dp"
+                pos_hint: {"center_x": 0.5}
+                on_press: root.manager.current = "camera"
+
+<CameraScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 15
+
+        Label:
+            text: "Camera"
+            font_size: "22sp"
+            size_hint_y: 0.1
+
+        # -------- LIVE CAMERA PREVIEW --------
+        Image:
+            id: camera_preview
+            size_hint_y: 0.75
+            allow_stretch: True
+            keep_ratio: True
+
+        # -------- TAKE PHOTO BUTTON --------
+        Button:
+            text: "Take Photo 📸"
+            size_hint_y: 0.15
+            font_size: "20sp"
+            background_color: 0.2, 0.6, 0.9, 1
+            on_press: root.take_photo()
+
+
+
+# ===========================
+# FRONT PAGE
+# ===========================
+<FrontPage>:
+    name: "front"
+
+    MDFloatLayout:
+
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "background.jpeg" #<-- your background image here
+
+        Image:
+            source: "logo.png"    # <-- your logo file
+            size_hint: None, None
+            size: dp(450), dp(450)   # adjust size if needed
+            pos_hint: {"center_x": .5, "center_y": .60}
+            allow_stretch: True
+            keep_ratio: True
+
+        
+
+        MDFillRoundFlatButton:
+            text: "Login / Sign Up"
+            pos_hint: {"center_x": .5, "center_y": .45}
+            size_hint_x: .6
+            md_bg_color: 0, 0.47, 0.95, 1
+            on_release: root.go_to_login()
+
+<LoginScreen>:
+    name: "login"
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "background.jpeg"
+
+    MDFloatLayout:
+
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"x": 0.02, "top": 0.98}
+            theme_text_color: "Custom"
+            text_color: 0, 0, 0, 1
+            on_release: app.go_back()
+
+        ScrollView:
+            size_hint: 1, None
+            height: root.height
+            pos_hint: {"center_x": 0.5, "center_y":0.35}
+
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: "25dp"
+                spacing: "20dp"   # Reduced spacing
+                size_hint_y: None
+                height: self.minimum_height
+                adaptive_height: True
+
+
+                MDLabel:
+                    text: "[b]Welcome Back[/b]"
+                    markup: True
+                    halign: "center"
+                    font_style: "H5"
+
+                MDLabel:
+                    text: "Let's get started — every drop matters."
+                    halign: "center"
+                    theme_text_color: "Secondary"
+                    font_style: "Body2"
+                    font_size: "13sp"
+
+                MDTextField:
+                    id: username
+                    hint_text: "Username"
+                    icon_left: "account"
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "55dp"
+
+                MDTextField:
+                    id: password
+                    hint_text: "Password"
+                    icon_left: "lock"
+                    password: True
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "55dp"
+
+                # 🧩 Forgot password moved closer to inputs
+                MDTextButton:
+                    text: "Forgot Password?"
+                    halign: "right"
+                    theme_text_color: "Custom"
+                    text_color: 0, 0.47, 0.95, 1
+                    size_hint_y: None
+                    height: "22dp"
+                    on_release: root.go_forgot()
+
+                # **Reduced height so gap becomes smaller**
+                MDLabel:
+                    text: root.msg
+                    halign: "center"
+                    theme_text_color: "Error"
+                    size_hint_y: None
+                    height: "10dp"   # Fixed height so no large empty space
+
+                MDFillRoundFlatButton:
+                    text: "Login"
+                    size_hint_y: None
+                    height: "50dp"
+                    md_bg_color: 0, 0.2, 0.5, 1
+                    on_release: root.login(self)
+
+                MDTextButton:
+                    text: "[b]Don't have an account? Sign Up[/b]"
+                    markup: True
+                    halign: "center"
+                    on_release: root.go_to_signup()
+
+
+<SignupScreen>:
+    name: "signup"
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "background.jpeg"
+
+    MDFloatLayout:
+
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"x": 0.02, "top": 0.98}
+            theme_text_color: "Custom"
+            text_color: 0, 0, 0, 1
+            on_release: app.go_back()
+
+        ScrollView:
+            size_hint: 1, None
+            height: root.height
+            pos_hint: {"center_x": 0.5, "center_y":0.35}
+
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: "25dp"
+                spacing: "20dp"
+                size_hint_y: None
+                height: self.minimum_height
+                adaptive_height: True
+
+                MDLabel:
+                    text: "[b]Sign Up[/b]"
+                    markup: True
+                    halign: "center"
+                    font_style: "H5"
+
+                MDLabel:
+                    text: "Your journey to clean water starts here."
+                    halign: "center"
+                    theme_text_color: "Secondary"
+                    font_style: "Body2"
+                    font_size: "13sp"
+
+                MDTextField:
+                    id: email_or_phone
+                    hint_text: "Email or Phone"
+                    icon_left: "email"
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "55dp"
+                    on_text_validate: root.send_otp()  # <-- Generate OTP when Enter is pressed
+
+                
+                MDTextField:
+                    id: otp_input
+                    hint_text: "Enter OTP"
+                    icon_left: "key"
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "55dp"
+                    
+                    max_text_length: 6
+
+                MDLabel:
+                    text: "[ref=resend][u]Resend OTP[/u][/ref]"
+                    markup: True
+                    halign: "left"
+                    text_color: 0,0,0, 1
+                    on_ref_press: root.resend_otp()
+
+
+                MDFillRoundFlatButton:
+                    text: "Verify OTP"
+                    size_hint_y: None
+                    height: "50dp"
+                    md_bg_color: 0, 0.4, 0.7, 1
+                    on_release: root.verify_otp()
+                    
+                MDLabel:
+                    id: signup_msg
+                    text: ""
+                    halign: "center"
+                    theme_text_color: "Error"
+                    size_hint_y: None
+                    height: "10dp"
+
+<CreateAccountScreen>:
+    name: "create_account"
+
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "background.jpeg"
+
+    MDFloatLayout:
+
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"x":0.02, "top":0.98}
+            theme_text_color: "Custom"
+            text_color: 0,0,0,1
+            on_release: app.go_back()
+
+        ScrollView:
+            size_hint: 1, None
+            height: root.height
+            pos_hint: {"center_x":0.5, "center_y":0.35}
+
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: "25dp"
+                spacing: "20dp"
+                size_hint_y: None
+                height: self.minimum_height
+                adaptive_height: True
+
+                MDLabel:
+                    text: "[b]Create Account[/b]"
+                    markup: True
+                    halign: "center"
+                    font_style: "H5"
+
+                MDTextField:
+                    id: username_input
+                    hint_text: "Username"
+                    icon_left: "account"
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "55dp"
+
+                MDTextField:
+                    id: password_input
+                    hint_text: "Password"
+                    icon_left: "lock"
+                    password: True
+                    mode: "rectangle"
+                    size_hint_y: None
+                    height: "55dp"
+                    on_text: root.check_password_live(self.text)
+
+                ### PASSWORD CONDITION BULLET POINTS ###
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: dp(110)
+                    padding: dp(10)
+                    spacing: dp(5)
+
+                    MDLabel:
+                        text: "• 1 Uppercase Letters"
+                        theme_text_color: "Custom"
+                        text_color: (0,1,0,1) if root.has_upper else (1,0,0,1)
+
+                    MDLabel:
+                        text: "• 1 Lowercase Letters"
+                        theme_text_color: "Custom"
+                        text_color: (0,1,0,1) if root.has_lower else (1,0,0,1)
+
+                    MDLabel:
+                        text: "• 2 Numbers"
+                        theme_text_color: "Custom"
+                        text_color: (0,1,0,1) if root.has_digit else (1,0,0,1)
+
+                    MDLabel:
+                        text: "• 1 Special Symbols"
+                        theme_text_color: "Custom"
+                        text_color: (0,1,0,1) if root.has_special else (1,0,0,1)
+
+
+                ### PASSWORD STRENGTH BAR ###
+                MDProgressBar:
+                    id: password_bar
+                    value: root.strength_value 
+                    color: 0, 1, 0, 1
+                    size_hint_x: 0.8
+                    pos_hint: {"center_x": 0.5}
+                    height: dp(10)
+
+                MDLabel:
+                    id: acc_msg
+                    text: root.msg
+                    halign: "center"
+                    theme_text_color: "Error"
+                    size_hint_y: None
+                    height: "20dp"
+
+                MDFillRoundFlatButton:
+                    text: "Create Account"
+                    size_hint_y: None
+                    height: "50dp"
+                    md_bg_color: 0,0.2,0.5,1
+                    on_release: root.create_account(username_input.text, password_input.text)          
+
+
+
+
+
+<ProfileScreen>:
+    name: "profile"
+
+    canvas.before:
+        Color:
+            rgba: 0.85, 0.93, 1, 1    # Water blue background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    MDFloatLayout:
+
+        # ---- Floating back button ----
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"x": 0.02, "top": 0.98}
+            theme_text_color: "Custom"
+            text_color: 0, 0, 0, 1
+            on_release: app.go_back()
+
+        # ---- Theme toggle button ----
+        MDIconButton:
+            icon: "theme-light-dark"
+            pos_hint: {"right": 0.98, "top": 0.98}
+            on_release: app.toggle_theme()
+
+        # ---- Scrollable content ----
+        MDScrollView:
+            size_hint: 1, 0.9
+            pos_hint: {"center_x": 0.5, "y": 0}
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(20)
+                spacing: dp(20)
+                size_hint_y: None
+                height: self.minimum_height
+
+                # Heading
+                MDLabel:
+                    text: "TrackH2O Profile"
+                    font_style: "H4"
+                    halign: "center"
+                    color: 0, 0, 0, 1
+                    size_hint_y: None
+                    height: dp(50)
+
+                # Profile Icon
+                MDCard:
+                    orientation: "vertical"
+                    padding: dp(20)
+                    size_hint_y: None
+                    height: dp(260)
+                    radius: dp(30)
+                    elevation: 4
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        padding: dp(10)
+                        spacing: dp(10)
+                        size_hint_y: None
+                        height: dp(200)
+                        halign: "center"
+
+                        Image:
+                            id: profile_photo
+                            source: "default_profile.jpeg"
+                            size_hint: None, None
+                            size: dp(130), dp(130)
+                            allow_stretch: True
+                            keep_ratio: True
+                            pos_hint: {"center_x": 0.5}
+
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(50)
+                            spacing: dp(20)
+                            pos_hint: {"center_x": 0.5}
+
+                            MDRaisedButton:
+                                text: "Gallery"
+                                on_release: root.open_gallery()
+
+                            MDRaisedButton:
+                                text: "Camera"
+                                on_release: root.open_camera()
+
+                # Basic Information
+                MDCard:
+                    orientation: "vertical"
+                    padding: dp(20)
+                    spacing: dp(10)
+                    radius: dp(25)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDLabel:
+                        text: "Basic Information"
+                        font_style: "H6"
+
+                    MDTextField:
+                        id: fullname
+                        hint_text: "Full Name"
+                        fill_color_normal: 0.90, 0.96, 1, 0.5
+                        fill_color_focus: 0.80, 0.92, 1, 0.5
+                        line_color_normal: 0, 0.47, 0.95, 1
+                        line_color_focus: 0, 0.47, 0.95, 1
+
+                    MDTextField:
+                        id: email
+                        hint_text: "Email Address"
+                        fill_color_normal: 0.90, 0.96, 1, 0.5
+                        fill_color_focus: 0.80, 0.92, 1, 0.5
+                        line_color_normal: 0, 0.47, 0.95, 1
+                        line_color_focus: 0, 0.47, 0.95, 1
+
+                    MDTextField:
+                        id: mobile
+                        hint_text: "Mobile Number"
+                        input_filter: "int"
+                        fill_color_normal: 0.90, 0.96, 1, 0.5
+                        fill_color_focus: 0.80, 0.92, 1, 0.5
+                        line_color_normal: 0, 0.47, 0.95, 1
+                        line_color_focus: 0, 0.47, 0.95, 1
+
+                # Location Details
+                MDCard:
+                    orientation: "vertical"
+                    padding: dp(20)
+                    spacing: dp(10)
+                    radius: dp(25)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDLabel:
+                        text: "Location Details"
+                        font_style: "H6"
+
+                    MDTextField:
+                        id: city
+                        hint_text: "City / Area"
+                        fill_color_normal: 0.90, 0.96, 1, 0.5
+                        fill_color_focus: 0.80, 0.92, 1, 0.5
+                        line_color_normal: 0, 0.47, 0.95, 1
+                        line_color_focus: 0, 0.47, 0.95, 1
+
+                    MDTextField:
+                        id: state
+                        hint_text: "State"
+                        fill_color_normal: 0.90, 0.96, 1, 0.5
+                        fill_color_focus: 0.80, 0.92, 1, 0.5
+                        line_color_normal: 0, 0.47, 0.95, 1
+                        line_color_focus: 0, 0.47, 0.95, 1
+
+                    MDTextField:
+                        id: pincode
+                        hint_text: "Pincode"
+                        input_filter: "int"
+                        fill_color_normal: 0.90, 0.96, 1, 0.5
+                        fill_color_focus: 0.80, 0.92, 1, 0.5
+                        line_color_normal: 0, 0.47, 0.95, 1
+                        line_color_focus: 0, 0.47, 0.95, 1
+
+                # User Type
+                MDCard:
+                    padding: dp(20)
+                    spacing: dp(10)
+                    radius: dp(25)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDLabel:
+                        text: "User Type"
+                        font_style: "H6"
+
+                    MDDropDownItem:
+                        id: user_type
+                        text: "Select User Type"
+                        on_release: root.open_user_type_menu()
+
+                # Submit Button
+                MDRaisedButton:
+                    text: "Create Profile"
+                    size_hint_x: 0.8
+                    pos_hint: {"center_x": 0.5}
+                    md_bg_color: 0, 0.47, 0.95, 1
+                    on_release: root.submit_form()
+<StatusScreen>:
+    name: "status"
+
+    canvas.before:
+        Color:
+            rgba: 0.85, 0.93, 1, 1    # Water blue background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    MDFloatLayout:
+
+        # ---- Floating Back Button ----
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"x": 0.02, "top": 0.98}
+            theme_text_color: "Custom"
+            text_color: 0, 0, 0, 1
+            on_release: root.go_back()
+
+        MDScrollView:
+            size_hint: 1, 0.95
+            pos_hint: {"x":0, "y":0}
+
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(20)
+                spacing: dp(15)
+                size_hint_y: None
+                height: self.minimum_height
+
+                # Title
+                MDLabel:
+                    text: "Your Uploads"
+                    font_style: "H5"
+                    halign: "center"
+                    theme_text_color: "Primary"
+                    size_hint_y: None
+                    height: dp(40)
+
+                # Upload List
+                MDBoxLayout:
+                    id: upload_list
+                    orientation: "vertical"
+                    size_hint_y: None
+                    padding: dp(5)
+                    spacing: dp(10)
+                    height: self.minimum_height
+
+
+
+<StatusDetailScreen>:
+    name: "status_detail"
+
+    canvas.before:
+        Color:
+            rgba: 0.85, 0.93, 1, 1    # Water blue background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    MDFloatLayout:
+
+        # ---- Floating back button ----
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"x": 0.02, "top": 0.98}
+            theme_text_color: "Custom"
+            text_color: 0, 0, 0, 1
+            on_release: root.go_back()
+
+        MDScrollView:
+            size_hint: 1, 0.95
+            pos_hint: {"x":0, "y":0}
+
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(20)
+                spacing: dp(20)
+                size_hint_y: None
+                height: self.minimum_height
+
+                # Image Preview Card
+                MDCard:
+                    size_hint_y: None
+                    height: dp(250)
+                    radius: dp(20)
+                    elevation: 4
+
+                    Image:
+                        id: img_preview
+                        source: ""
+                        allow_stretch: True
+                        keep_ratio: True
+
+                # Description Title
+                MDLabel:
+                    text: "Description"
+                    font_style: "H6"
+                    halign: "center"
+                    theme_text_color: "Primary"
+
+                # Description Text
+                MDLabel:
+                    id: desc_label
+                    text: ""
+                    halign: "center"
+                    theme_text_color: "Secondary"
+                    size_hint_y: None
+                    height: self.texture_size[1] + dp(20)
+
+                # Status Label
+                MDLabel:
+                    id: status_label
+                    text: "Status:"
+                    halign: "center"
+                    font_style: "H6"
+                    theme_text_color: "Hint"
+                    size_hint_y: None
+                    height: dp(40)
