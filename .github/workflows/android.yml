@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04   # important (more stable than latest)
 
     steps:
     - name: Checkout repo
@@ -34,9 +34,11 @@ jobs:
         pip install --upgrade pip
         pip install buildozer cython==0.29.36
 
+    - name: Accept Android Licenses
+      run: yes | buildozer android sdk
+
     - name: Build APK
-      run: |
-        buildozer android debug
+      run: buildozer android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
